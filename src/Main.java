@@ -31,7 +31,7 @@ public class Main {
         zerind.addEdge(71, oradea);
         zerind.addEdge(75, arad);
 
-        arad.addEdge(75, arad);
+        arad.addEdge(75, zerind);
         arad.addEdge(140, sibiu);
         arad.addEdge(118, timisoara);
 
@@ -113,6 +113,14 @@ public class Main {
         romaniaRoadGraph.addNode(iasi);
         romaniaRoadGraph.addNode(neamt);
 
-        System.out.print(romaniaRoadGraph.toString());
+        Graph bfs = romaniaRoadGraph.bfs(arad, craiova);
+
+        System.out.println("BFS");
+        System.out.println(bfs);
+
+        Graph dfs = romaniaRoadGraph.dfs(arad, craiova);
+
+        System.out.println("\nDFS");
+        System.out.println(dfs);
     }
 }
