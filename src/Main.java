@@ -3,26 +3,26 @@ public class Main {
     public static void main(String[] args) {
 
         // Create nodes
-        Node<String> oradea = new Node<>("Oradea");
-        Node<String> zerind = new Node<>("Zerind");
-        Node<String> arad = new Node<>("Arad");
-        Node<String> sibiu = new Node<>("Sibiu");
-        Node<String> timisoara = new Node<>("Timisoara");
-        Node<String> lugoj = new Node<>("Lugoj");
-        Node<String> rimnicuvilcea = new Node<>("Rimnicu Vilcea");
-        Node<String> fagaras = new Node<>("Fagaras");
-        Node<String> bucharest = new Node<>("Bucharest");
-        Node<String> pitesti = new Node<>("Pitesti");
-        Node<String> mehadia = new Node<>("Mehadia");
-        Node<String> drobeta = new Node<>("Drobeta");
-        Node<String> craiova = new Node<>("Craiova");
-        Node<String> giurgiu = new Node<>("Giurgiu");
-        Node<String> urziceni = new Node<>("Urziceni");
-        Node<String> vaslui = new Node<>("Vaslui");
-        Node<String> iasi = new Node<>("Iasi");
-        Node<String> neamt = new Node<>("Neamt");
-        Node<String> hirsova = new Node<>("Hirsova");
-        Node<String> eforie = new Node<>("Eforie");
+        Node<CustomNode> oradea = new Node<>(new CustomNode("Oradea", 380));
+        Node<CustomNode> zerind = new Node<>(new CustomNode("Zerind", 374));
+        Node<CustomNode> arad = new Node<>(new CustomNode("Arad", 366));
+        Node<CustomNode> sibiu = new Node<>(new CustomNode("Sibiu", 253));
+        Node<CustomNode> timisoara = new Node<>(new CustomNode("Timisoara", 329));
+        Node<CustomNode> lugoj = new Node<>(new CustomNode("Lugoj", 244));
+        Node<CustomNode> rimnicuvilcea = new Node<>(new CustomNode("Rimnicu Vilcea", 193));
+        Node<CustomNode> fagaras = new Node<>(new CustomNode("Fagaras", 176));
+        Node<CustomNode> bucharest = new Node<>(new CustomNode("Bucharest", 0));
+        Node<CustomNode> pitesti = new Node<>(new CustomNode("Pitesti", 100));
+        Node<CustomNode> mehadia = new Node<>(new CustomNode("Mehadia", 241));
+        Node<CustomNode> drobeta = new Node<>(new CustomNode("Drobeta", 242));
+        Node<CustomNode> craiova = new Node<>(new CustomNode("Craiova", 160));
+        Node<CustomNode> giurgiu = new Node<>(new CustomNode("Giurgiu", 77));
+        Node<CustomNode> urziceni = new Node<>(new CustomNode("Urziceni", 80));
+        Node<CustomNode> vaslui = new Node<>(new CustomNode("Vaslui", 199));
+        Node<CustomNode> iasi = new Node<>(new CustomNode("Iasi", 226));
+        Node<CustomNode> neamt = new Node<>(new CustomNode("Neamt", 234));
+        Node<CustomNode> hirsova = new Node<>(new CustomNode("Hirsova", 151));
+        Node<CustomNode> eforie = new Node<>(new CustomNode("Eforie", 161));
 
         // Create all the edges
         oradea.addEdge(151, sibiu);
@@ -113,14 +113,31 @@ public class Main {
         romaniaRoadGraph.addNode(iasi);
         romaniaRoadGraph.addNode(neamt);
 
-        Graph bfs = romaniaRoadGraph.bfs(arad, craiova);
+        Graph astar = romaniaRoadGraph.aStar(arad, bucharest);
 
-        System.out.println("BFS");
-        System.out.println(bfs);
+        System.out.println("\nA*");
+        System.out.println(astar);
+    }
+}
 
-        Graph dfs = romaniaRoadGraph.dfs(arad, craiova);
+/***
+ * Custom node that includes LOS to Bucharest
+ */
+class CustomNode {
+    private final String cityName;
+    private final int losToBucharest;
 
-        System.out.println("\nDFS");
-        System.out.println(dfs);
+    CustomNode(String cityName, int losToBucharest) {
+        this.cityName = cityName;
+        this.losToBucharest = losToBucharest;
+    }
+
+    public int getLosToBucharest () {
+        return losToBucharest;
+    }
+
+    @Override
+    public String toString() {
+        return cityName;
     }
 }

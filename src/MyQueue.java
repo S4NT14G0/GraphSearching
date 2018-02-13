@@ -1,6 +1,7 @@
 import java.util.ArrayList;
+import java.util.Iterator;
 
-public class MyQueue<T> {
+public class MyQueue<T> implements Iterable{
 
     private static int count = 0;
 
@@ -56,7 +57,6 @@ public class MyQueue<T> {
      */
     public final void enqueue(final T item) {
         //if not add it to end
-        //array[count] = item;
         this.list.add(item);
         count++;
     }
@@ -73,6 +73,11 @@ public class MyQueue<T> {
         }
 
         return output;
+    }
+
+    @Override
+    public Iterator iterator() {
+        return list.iterator();
     }
 }
 

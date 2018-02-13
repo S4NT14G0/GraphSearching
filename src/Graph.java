@@ -1,17 +1,20 @@
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Stack;
 
-public class Graph {
-    ArrayList<Node<String>> nodes;
+public class Graph<T> {
+    ArrayList<Node<T>> nodes;
 
     public Graph() {
         nodes = new ArrayList<>();
     }
 
-    public void addNode (Node<String> node) {
+    public void addNode (Node<T> node) {
         nodes.add(node);
     }
 
-    public ArrayList<Node<String>> getNodes () {
+    public ArrayList<Node<T>> getNodes () {
         return nodes;
     }
 
@@ -126,6 +129,88 @@ public class Graph {
 
         return searchGraph;
     }
+
+    public Graph aStar (Node startingNode, Node destinationNode) {
+        Graph searchGraph = new Graph();
+
+        // Initialize the open and closed structures
+        ArrayList<Pair<Node<CustomNode>, Integer>> openList = new ArrayList<>();
+        ArrayList<Pair<Node<CustomNode>, Integer>> closedList = new ArrayList<>();
+
+        openList.add(new Pair(startingNode, 0));
+
+        while (!openList.isEmpty()) {
+            // Find the next lowest f value
+            Pair<Node<CustomNode>, Integer> q = findLowestOpenFValue(openList);
+
+            // Remove q from our list
+            openList.remove(q);
+
+            searchGraph.addNode(q.getFirst());
+
+            // Look at q's possible next nodes
+            for (Object obj: q.getFirst().getEdges()) {
+
+                // Get the successor node
+                Node successorNode = ((Edge) obj).getDestination();
+
+                // Initialize g
+                int g = 0;
+
+                // Cost from start to get to this successor city
+                if (q.getSecond() != 0)
+                    g = ((Edge) obj).getWeight() + (q.getSecond() - q.getFirst().getValue().getLosToBucharest());
+                else
+                    g = ((Edge) obj).getWeight() + q.getSecond();
+
+                // Find the successor city heuristic
+                int h = ((CustomNode) successorNode.getValue()).getLosToBucharest();
+
+                // Check the current nodes value
+                System.out.println(successorNode + ", g: " + g + ", h: " + h);
+
+                int f = g + h;
+
+                // Create our custom successor pair
+                Pair<Node<CustomNode>, Integer> successor = new Pair<>(successorNode, f);
+
+                // Check if one of these nodes is the destination and we don't have any paths with lower cost left
+                if (successorNode.equals(destinationNode)  && successor.getSecond() <= findLowestOpenFValue(openList).getSecond()) {
+                    return searchGraph;
+                }
+
+                // Skip this node if it's in the open list
+                if (openList.contains(successor))
+                    break;
+
+                if (closedList.contains(successor))
+                    break;
+                else
+                    openList.add(successor);
+            }
+
+            closedList.add(q);
+        }
+
+        return searchGraph;
+    }
+
+    private Pair<Node<CustomNode>,Integer> findLowestOpenFValue (ArrayList<Pair<Node<CustomNode>,Integer>> openList) {
+        // Set the first node as the lowest
+        Pair lowestFNode = openList.get(0);
+
+        // Iterate over the nodes and find lowest f value node
+        for (Object obj: openList) {
+
+            Pair node = (Pair) obj;
+
+            if ((int) node.getSecond() <  (int)lowestFNode.getSecond()) {
+                lowestFNode = node;
+            }
+        }
+
+        return lowestFNode;
+    }
 }
 
 class Node<T> {
@@ -176,7 +261,6 @@ class Node<T> {
 
         return false;
     }
-
 }
 
 class Edge {
@@ -209,5 +293,23 @@ class Edge {
             return true;
 
         return false;
+    }
+}
+
+class Pair<F, S> {
+    private final F first; //first member of pair
+    private final S second; //second member of pair
+
+    public Pair(F first, S second) {
+        this.first = first;
+        this.second = second;
+    }
+
+    public F getFirst() {
+        return first;
+    }
+
+    public S getSecond() {
+        return second;
     }
 }
