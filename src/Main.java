@@ -113,7 +113,7 @@ public class Main {
         romaniaRoadGraph.addNode(iasi);
         romaniaRoadGraph.addNode(neamt);
 
-        Graph astar = romaniaRoadGraph.aStar(arad, bucharest);
+        Graph astar = romaniaRoadGraph.aStar(zerind, bucharest);
 
         System.out.println("\nA*");
         System.out.println(astar);
